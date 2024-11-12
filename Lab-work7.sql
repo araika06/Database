@@ -39,35 +39,45 @@ insert into employees(first_name, last_name, salary, department_id) values('John
                                                                           ('Ava', 'Johnson', 48000, 5);
 
 --1
-create index idx_countries_name on countries(name)
-where name =  'USA';
+create index idx_countries_name on countries(name);
 
 SELECT * FROM countries WHERE name = 'USA';
+
+explain analyze SELECT * FROM countries WHERE name = 'USA';
 
 drop index idx_countries_name;
 
 --2
-create index idx_employees_name_surname on employees(first_name, last_name)
-where first_name = 'John' and last_name = 'Doe';
+create index idx_employees_name_surname on employees(first_name, last_name);
+
+SELECT * FROM employees WHERE first_name = 'Oliver'
+AND last_name = 'Wilson';
 
 drop index idx_employees_name_surname;
 
 --3
-create unique index idx_salary on employees(salary) where salary < 70000 and salary > 55000;
+create unique index idx_salary on employees(salary);
+
+SELECT * FROM employees WHERE salary < 70000
+AND salary > 55000;
 
 drop index idx_salary;
 
 --4
-create index idx_sub_name on employees(substring(first_name from 1 for 4))
-where (substring(first_name from 1 for 4)) = 'live';
+create index idx_sub_name on employees(substring(first_name from 1 for 4));
+
+SELECT * FROM employees WHERE substring(first_name
+from 1 for 4) = 'Oliv';
 
 drop index idx_sub_name;
 
 --5
-create index idx_depatrments_budget_salary on employees(department_id, salary)
-where salary < 65000;
-create index idx_departments_budget on departments(budget)
-where budget > 200000;
+create index idx_depatrments_budget_salary on employees(department_id, salary);
+create index idx_departments_budget on departments(budget);
+
+SELECT * FROM employees e JOIN departments d
+ON d.department_id = e.department_id WHERE
+d.budget > 55000 AND e.salary < 200000;
 
 drop index idx_depatrments_budget_salary;
 drop index idx_departments_budget;
